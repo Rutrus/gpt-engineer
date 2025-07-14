@@ -106,6 +106,32 @@ By default, gpt-engineer supports OpenAI Models via the OpenAI API or Azure Open
 
 With a little extra setup, you can also run with open source models like WizardCoder. See the [documentation](https://gpt-engineer.readthedocs.io/en/latest/open_models.html) for example instructions.
 
+#### Ollama Integration (Local Models)
+
+GPT Engineer now supports **Ollama** for running models locally without external APIs. This allows you to use models like `qwen2.5-coder` completely offline.
+
+**Quick Setup:**
+```bash
+# Install Ollama
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Download model
+ollama pull qwen2.5-coder
+
+# Start Ollama server
+ollama serve
+
+# Configure environment
+export OPENAI_API_BASE=http://localhost:11434/v1
+export OPENAI_API_KEY=ollama
+export MODEL_NAME=qwen2.5-coder
+
+# Use GPT Engineer
+gpte projects/my-project qwen2.5-coder
+```
+
+See [Ollama Integration Guide](docs/ollama_integration.md) for detailed instructions.
+
 ## Mission
 
 The gpt-engineer community mission is to **maintain tools that coding agent builders can use and facilitate collaboration in the open source community**.

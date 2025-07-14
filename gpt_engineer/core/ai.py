@@ -343,6 +343,10 @@ class AI:
         BaseChatModel
             The created chat model.
         """
+        # Check if using Ollama via explicit configuration
+        openai_api_base = os.getenv("OPENAI_API_BASE")
+        is_ollama = os.getenv("IS_OLLAMA", "").lower() in ("true", "1", "yes")
+
         if self.azure_endpoint:
             return AzureChatOpenAI(
                 azure_endpoint=self.azure_endpoint,
@@ -361,6 +365,16 @@ class AI:
                 callbacks=[StreamingStdOutCallbackHandler()],
                 streaming=self.streaming,
                 max_tokens_to_sample=4096,
+            )
+        elif is_ollama and openai_api_base:
+            # Configure for Ollama API
+            return ChatOpenAI(
+                model=self.model_name,
+                temperature=self.temperature,
+                streaming=self.streaming,
+                callbacks=[StreamingStdOutCallbackHandler()],
+                openai_api_base=openai_api_base,
+                openai_api_key=os.getenv("OPENAI_API_KEY", "ollama"),
             )
         elif self.vision:
             return ChatOpenAI(

@@ -551,8 +551,10 @@ def main(
 
     if ai.token_usage_log.is_openai_model():
         print("Total api cost: $ ", ai.token_usage_log.usage_cost())
+        print("Total tokens used: ", ai.token_usage_log.total_tokens())
     elif os.getenv("LOCAL_MODEL"):
         print("Total api cost: $ 0.0 since we are using local LLM.")
+        print("Total tokens used: ", ai.token_usage_log.total_tokens())
     else:
         print("Total tokens used: ", ai.token_usage_log.total_tokens())
 
